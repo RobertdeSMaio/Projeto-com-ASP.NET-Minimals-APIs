@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using minimal_api.Domains.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace minimal_api.Structure.DB
 {
@@ -15,6 +15,18 @@ namespace minimal_api.Structure.DB
             _configuracaoAppSettings = configuracaoAppSettings;
         }
         public DbSet<Administrator> Admins {get; set;} = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Administrator>().HasData(
+                new Administrator {
+                    Id = 1,
+                    Email = "Admin@test.com",
+                    Password = "123456",
+                    Perfil = "Admin",
+                }
+            );
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
