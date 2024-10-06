@@ -15,6 +15,7 @@ namespace minimal_api.Structure.DB
             _configuracaoAppSettings = configuracaoAppSettings;
         }
         public DbSet<Administrator> Admins {get; set;} = default!;
+        public DbSet<Veiculo> Veiculos {get; set;} = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
