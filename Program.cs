@@ -2,12 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using minimal_api.Domains.DTO;
 using minimal_api.Domains.Interfaces;
+using minimal_api.Domains.ModelViews;
 using minimal_api.Domains.Services;
 using minimal_api.Structure.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAdminServices, AdministratorService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DbContexto>(
   options => options.UseMySql(
@@ -18,7 +22,7 @@ builder.Services.AddDbContext<DbContexto>(
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => Results.Json(new Home()));
 
 app.MapPost("/login", ([FromBody]LoginDTO loginDTO, IAdminServices administratorService) => {
   if(administratorService.Login(loginDTO) != null){
@@ -28,6 +32,9 @@ app.MapPost("/login", ([FromBody]LoginDTO loginDTO, IAdminServices administrator
     return Results.Unauthorized();
   }
 });
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();
 
